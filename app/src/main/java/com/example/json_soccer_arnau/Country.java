@@ -9,6 +9,8 @@ public class Country {
         this.imgCountry = imgCountry;
     }
 
+    public Country(){}
+
     public String getNameCountry() {
         return nameCountry;
     }
