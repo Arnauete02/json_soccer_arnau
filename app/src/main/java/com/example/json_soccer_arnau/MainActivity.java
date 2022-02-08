@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,18 +36,20 @@ public class MainActivity extends AppCompatActivity {
 
         hook();
 
-        //initList();
+        initList();
 
+        countryAdapter = new CountryAdapter(this, mCountry);
+        spinnerClass.setAdapter(countryAdapter);
         spinnerClass.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                 Country selectedItem = (Country) parent.getItemAtPosition(position);
-                String selectedCountry = selectedItem.getNameCountry();
+                String selectedCountryName = selectedItem.getNameCountry();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                Toast.makeText(MainActivity.this, "Any country selected", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -56,37 +59,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initList() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                JSON_COUNTRIES,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        for (int i = 0; i < response.length(); i++){
-                            try {
-                                JSONObject countryOject = response.getJSONObject(i);
-                                Country country = new Country();
-                                country.setNameCountry(countryOject.getString("name_en"));
-                                mCountry.add(country);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        countryAdapter = new CountryAdapter(getApplicationContext(), mCountry);
-                        spinnerClass.setAdapter(countryAdapter);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        );
-
-        queue.add(jsonArrayRequest);
+        mCountry = new ArrayList<>();
+        mCountry.add(new Country(getString(R.string.spain), R.drawable.spain));
+        mCountry.add(new Country(getString(R.string.argentina), R.drawable.argentina));
+        mCountry.add(new Country(getString(R.string.australia), R.drawable.australia));
+        mCountry.add(new Country(getString(R.string.canada), R.drawable.canada));
+        mCountry.add(new Country(getString(R.string.congo), R.drawable.congo));
     }
 }
