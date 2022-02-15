@@ -12,6 +12,10 @@ public class League {
         this.textDescription = textDescription;
     }
 
+    public League(){
+
+    }
+
     public String getFlag() {
         return flag;
     }
