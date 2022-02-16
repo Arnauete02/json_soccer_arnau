@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,7 +12,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -20,24 +20,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class DetailActivity extends AppCompatActivity {
 
     ArrayList<League> leagues = new ArrayList<>();
     private RecyclerView recyclerView;
-
-    private String getIntent;
-    private static String JSON_URL = "https://www.thesportsdb.com/api/v1/json/2/search_all_leagues.php?c=";
     MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        getIntent = getIntent().getStringExtra("countryName");
-        JSON_URL = JSON_URL + getIntent + "&s=Soccer";
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -48,7 +41,7 @@ public class DetailActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                JSON_URL,
+                getUrl(),
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -59,9 +52,14 @@ public class DetailActivity extends AppCompatActivity {
                                 try {
                                     JSONObject leagueObject = leagueArray.getJSONObject(i);
                                     League league = new League();
-                                    league.setFlag(leagueObject.getString("strBadge"));
-                                    league.setTextTitle(leagueObject.getString("strLeague"));
-                                    league.setTextDescription(leagueObject.getString("strDescriptionEN"));
+                                    league.setStrBadge(leagueObject.getString("strBadge"));
+                                    league.setStrLeague(leagueObject.getString("strLeague"));
+                                    league.setStrDescriptionEN(leagueObject.getString("strDescriptionEN"));
+                                    league.setStrWebsite(leagueObject.getString("strWebsite"));
+                                    league.setStrFanart1(leagueObject.getString("strFanart1"));
+                                    league.setStrFanart1(leagueObject.getString("strFanart2"));
+                                    league.setStrFanart1(leagueObject.getString("strFanart3"));
+                                    league.setStrFanart1(leagueObject.getString("strFanart4"));
                                     leagues.add(league);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -84,5 +82,12 @@ public class DetailActivity extends AppCompatActivity {
                 }
         );
         queue.add(jsonObjectRequest);
+    }
+
+    private String getUrl(){
+        Intent intent = getIntent();
+        String country = intent.getStringExtra(MainActivity.EXTRA_JSON_URL);
+        String url = "https://www.thesportsdb.com/api/v1/json/2/search_all_leagues.php?c=" + country + "&s=Soccer";
+        return url;
     }
 }

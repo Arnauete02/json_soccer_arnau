@@ -1,10 +1,11 @@
 package com.example.json_soccer_arnau;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -35,12 +37,31 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.textTitle.setText(mLeague.get(position).getTextTitle());
-        holder.textDescription.setText(mLeague.get(position).getTextDescription() );
-        Picasso.get().load(mLeague.get(position).getFlag())
+        holder.strLeague.setText(mLeague.get(position).getStrLeague());
+        holder.strDescriptionEN.setText(mLeague.get(position).getStrDescriptionEN() );
+        Picasso.get().load(mLeague.get(position).getStrBadge())
                 .fit()
                 .centerCrop()
-                .into(holder.flag);
+                .into(holder.strBadge);
+        holder.buttonWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        ArrayList<String> images = new ArrayList<>();
+        images.add(mLeague.get(position).getStrFanart1());
+        images.add(mLeague.get(position).getStrFanart2());
+        images.add(mLeague.get(position).getStrFanart3());
+        images.add(mLeague.get(position).getStrFanart4());
+
+        holder.buttonImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -49,15 +70,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView flag;
-        TextView textTitle;
-        TextView textDescription;
+        ImageView strBadge;
+        TextView strLeague;
+        TextView strDescriptionEN;
+        Button buttonWeb;
+        Button buttonImg;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            flag = itemView.findViewById(R.id.flag);
-            textTitle = itemView.findViewById(R.id.textTitle);
-            textDescription = itemView.findViewById(R.id.textDescription);
+            strBadge = itemView.findViewById(R.id.flag);
+            strLeague = itemView.findViewById(R.id.textTitle);
+            strDescriptionEN = itemView.findViewById(R.id.textDescription);
+            buttonWeb = itemView.findViewById(R.id.visitWeb);
+            buttonImg = itemView.findViewById(R.id.images);
         }
     }
 }

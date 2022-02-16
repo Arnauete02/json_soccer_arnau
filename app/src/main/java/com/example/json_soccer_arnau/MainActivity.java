@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Country> mCountry;
     private CountryAdapter countryAdapter;
 
+    public static String EXTRA_JSON_URL = "com.example.edt19.EXTRA_TEXT_NAME";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 Country selectedItem = (Country) parent.getItemAtPosition(position);
                 String selectedCountryName = selectedItem.getNameCountry();
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("countryName", selectedCountryName);
+                intent.putExtra(EXTRA_JSON_URL, selectedCountryName);
                 startActivity(intent);
             }
 
